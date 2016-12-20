@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: MySQL.Dockerfile
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: zalando
+      MYSQL_DATABASE: zalando
+      MYSQL_USER: zalando
+      MYSQL_PASSWORD: zalando
+    ports:
+      - "3306:3306"
+  app:
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+    restart: always
+    build:
+      context: .
+      dockerfile: App.Dockerfile
+    volumes:
+      - ./src:/var/www/html
