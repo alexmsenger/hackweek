@@ -35,7 +35,25 @@ class FashionSprinterAPI extends API {
      return $orders->listAllOrders();
    }
    else {
-     return 'Nothing';
+     return NULL;
    }
+ }
+
+ protected function order($id) {
+   if($this->method == 'GET') {
+     $orders = $this->load('order');
+     return $orders->getOrder($id);
+   }
+   else {
+     return NULL;
+   }
+ }
+
+ protected function alternatives($id) {
+   if($this->method == 'GET') {
+     $order = $this->load('order');
+     return $order->getAlternative($id);
+   }
+   else return NULL;
  }
 }

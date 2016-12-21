@@ -46,11 +46,26 @@ class Db {
   public function execute() {
     if($this->statement->execute()) {
       Db::$numQueries++;
-      return $this;
+      return TRUE;
     }
     else {
       die('DB Error: Statement failed to execute.');
     }
+  }
+
+  public function result() {
+    $res = $this->statement->get_result();
+    if($this->statement->affected_rows == 1) {
+      return $res->fetch_assoc();
+    }
+    elseif ($this->statement->affected_rows > 1) {
+      $array = array();
+      while ($row = $res->fetch_assoc()) {
+        $array[] = $row;
+      }
+      return $array;
+    }
+    else return NULL;
   }
 
 
@@ -58,7 +73,7 @@ class Db {
   private function getTypes($params) {
     $str = '';
     foreach($params as $key => $val) {
-      if(filter_var($value, FIILTER_VALIDATE_INT)) $str .= 'i';
+      if(filter_var($val, FILTER_VALIDATE_INT)) $str .= 'i';
       else $str .= 's';
     }
     return $str;

@@ -14,7 +14,7 @@ define('API', 'app/api/');
 /**
  *
  */
-define('DB_HOST', 'd6907b137ec9');
+define('DB_HOST', '0063c4f189ab');
 define('DB_USER', 'zalando');
 define('DB_PASSWORD', 'zalando');
 define('DB_DATABASE', 'zalando');
