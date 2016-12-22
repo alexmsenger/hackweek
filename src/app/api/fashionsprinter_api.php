@@ -21,14 +21,6 @@ class FashionSprinterAPI extends API {
     $this->user = $user;
   }
 
-  protected function example() {
-    if ($this->method == 'GET') {
-      return "Your name is " . $this->user->name;
-    } else {
-      return "Only accepts GET requests";
-    }
- }
-
  protected function orders() {
    if($this->method == 'GET') {
      $orders = $this->load('order');
@@ -39,13 +31,59 @@ class FashionSprinterAPI extends API {
    }
  }
 
- protected function order($id) {
-   if($this->method == 'GET') {
-     $orders = $this->load('order');
-     return $orders->getOrder($id);
+ protected function order($id = -1) {
+   if($this->method == 'GET' && $id !== -1) {
+     $order = $this->load('order');
+     return $order->getOrder($id);
+   }
+   elseif($this->method == 'POST' && $id !== -1) {
+     $order = $this->load('order');
+     $this->order->update();
    }
    else {
      return NULL;
+   }
+ }
+
+ protected function address($id = null) {
+   if($this->method == 'POST') {
+     $this->file = json_decode($this->file);
+     if(json_last_error() === JSON_ERROR_NONE) {
+       $address = $this->load('address');
+       $success = $address->create($this->file);
+       if($success) {
+         return $success;
+       }
+       else return false;
+     }
+     else return null;
+   }
+   elseif($this->method == 'GET' && empty($id)) {
+     $address = $this->load('address');
+     return $address->index();
+   }
+   elseif($this->method == 'GET' && !empty($id)) {
+     $address = $this->load('address');
+     return $address->show($id);
+   }
+   elseif($this->method == 'DELETE' && !empty($id)) {
+     $address = $this->load('address');
+     return $address->delete($id);
+   }
+ }
+
+ protected function alternative($id = -1) {
+   if($this->method == 'POST' && empty($id)) {
+     $this->file = json_decode($this->file);
+     if(json_last_error() === JSON_ERROR_NONE) {
+       $order = $this->load('order');
+       $success = $order->saveAlternative($this->file);
+       if($success) {
+         return $success;
+       }
+       else return FALSE;
+     }
+     else return NULL;
    }
  }
 
@@ -56,4 +94,14 @@ class FashionSprinterAPI extends API {
    }
    else return NULL;
  }
+
+ protected function endpointTypes() {
+   if($this->method == 'GET') {
+     $order = $this->load('order');
+     return $order->getEndpointTypes();
+   }
+   else return NULL;
+ }
+
+
 }

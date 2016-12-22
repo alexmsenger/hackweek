@@ -112,4 +112,36 @@ class Order {
     $this->db->execute();
     return $this->db->result();
   }
+
+  private function extract($data, $keys) {
+    $data = (array) $data;
+    $extracted = array();
+    foreach ($keys as $value) {
+      if(isset($data[$value]) && !empty($data[$value])) $extracted[$value] = $data[$value];
+    }
+    return $extracted;
+  }
+
+  private function placeholder($data) {
+    return array_fill(0, count($data), '?');
+  }
+
+  public function saveAlternative($data) {
+    $address = ['street', 'adendum', 'zip', 'city', 'country'];
+    $address = $this->extract($data, $address);
+
+    $stmt = "INSERT INTO `address` (".implode(', ', array_keys($address)).") VALUES (".implode(', ', array_fill(0, count($address), '?')).")";
+    $this->db->prepare($stmt);
+    $this->db->bind($address);
+    if($this->db->execute()) return true;
+    //TODO handle error message
+    return false;
+  }
+
+  public function getEndpointTypes() {
+    $stmt = "SELECT * FROM `endpoint_type` ORDER BY name ASC";
+    $this->db->prepare($stmt);
+    $this->db->execute();
+    return $this->db->result();
+  }
 }

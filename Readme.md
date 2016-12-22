@@ -12,11 +12,15 @@ Their values can be random as they are not checked at the moment.
 
 ##List of Endpoints:
 
-| Name | Type | Params |
-| --- | --- | ---|
-| `orders` | `GET` | none |
-| `order` | `GET` | Order ID |
-| `alternatives` | `GET` | Endpoint ID|
+| Name | Type | Params | Behavior |
+| --- | --- | ---| --- |
+| `orders` | `GET` | none | |
+| `order` | `GET` | Order ID | |
+| `alternatives` | `GET` | Endpoint ID| |
+| `address` | `GET` | none | Returns all addresses |
+| `address` | `GET` | `id` | Get the address with id = `id` |
+| `address` | `DELETE` | `id` | Deletes the address with id = `id` |
+| `address` | `POST` | none | Expects JSON. Creates address. |
 
 
 ## Endpoint Details
@@ -56,3 +60,16 @@ Returns the following for each order (Limited to 30)
 "dropoff_city": "Berlin",
 "dropoff_country": "Germany"
 ```
+
+### address
+#### POST
+The following parameters are required / possible:
+
+| param | type | required |
+| --- | --- | ---- |
+| id | int | no |
+| street | string | yes |
+| adendum | string | no |
+| zip | int | yes |
+| city | string | yes |
+| country | string | no |

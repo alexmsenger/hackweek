@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `address` (
   `adendum` varchar(255) DEFAULT NULL,
   `zip` char(5) NOT NULL,
   `city` varchar(127) NOT NULL,
-  `country` varchar(127) NOT NULL,
+  `country` varchar(127) NOT NULL DEFAULT 'Germany',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
@@ -74,10 +74,9 @@ CREATE TABLE IF NOT EXISTS `endpoint_type` (
 
 INSERT INTO `endpoint_type` (`id`, `name`) VALUES
 (1, 'Office'),
-(2, 'Späti'),
 (3, 'Spätkauf'),
 (4, 'Tankstelle'),
-(5, 'privat');
+(5, 'Neighbor');
 
 DROP TABLE IF EXISTS `order`;
 CREATE TABLE IF NOT EXISTS `order` (
